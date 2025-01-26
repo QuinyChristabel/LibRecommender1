@@ -40,7 +40,7 @@ def compute_sparse_feats(
         sparse_embeds = tf.nn.embedding_lookup(embed_var, all_sparse_indices)
 
     if flatten:
-        sparse_embeds = tf.keras.layers.Flatten()(sparse_embeds)
+        sparse_embeds = tf.reshape(sparse_embeds, [-1, sparse_embeds.shape[-1]])
     return sparse_embeds
 
 
@@ -144,7 +144,7 @@ def compute_dense_feats(
     embed_var = tf.tile(tf.expand_dims(embed_var, axis=0), multiple)
     dense_embeds = embed_var * dense_values
     if flatten:
-        dense_embeds = tf.keras.layers.Flatten()(dense_embeds)
+        dense_embeds = tf.reshape(dense_embeds, [-1, tf.shape(dense_embeds)[1] * tf.shape(dense_embeds)[2]])
     return dense_embeds
 
 
